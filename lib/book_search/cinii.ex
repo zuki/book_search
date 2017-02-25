@@ -39,9 +39,14 @@ defmodule BookSearch.Cinii do
           ~x"//feed/entry"l,
           title: ~x"./title/text()"s,
           url: ~x"./id/text()"s,
-          author: ~x"./author/name/text()"sl
+          author: ~x"./author/name/text()"sl,
+          publisher: ~x"./dc:publisher/text()"s,
+          date: ~x"./prism:publicationDate/text()"s,
+          isbn: ~x"./dcterms:hasPart/text()"sl
         )
         |> Enum.map(fn (m) -> Map.update!(m, :author, &Enum.join(&1, ", ")) end)
+        |> Enum.map(fn (m) -> Map.update!(m, :isbn, &Enum.at(&1, 0))end)
+        |> Enum.map(fn (m) -> Map.update!(m, :isbn, fn(v) -> unless v, do: "", else: String.slice(v, 9..-1)end)end)
       {:ok, %HTTPoison.Response{status_code: code}} ->
         Logger.warn("HTTP Status: #{code}")
         []

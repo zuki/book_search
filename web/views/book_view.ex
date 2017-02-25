@@ -8,6 +8,9 @@ defmodule BookSearch.BookView do
   def render("book.json", %{book: book}) do
     %{title: book.title,
       author: book.author,
+      publisher: book.publisher,
+      date: book.date,
+      isbn: book.isbn,
       url: book.url,
       backend: book.backend}
   end

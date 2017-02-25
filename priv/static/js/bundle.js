@@ -57,17 +57,26 @@ var BookSearch = function (_Component) {
         _react2.default.createElement(
           'h1',
           null,
-          'Phoenix+React BookSearch Sample'
+          'BookSearch'
         ),
         _react2.default.createElement(
           'div',
-          { className: 'col-md-3' },
-          _react2.default.createElement(Submit, { onSubmit: this.handleSearchSubmit.bind(this) })
-        ),
-        _react2.default.createElement(
-          'div',
-          { className: 'col-md-9' },
-          books
+          { className: 'row' },
+          _react2.default.createElement(Submit, { onSubmit: this.handleSearchSubmit.bind(this) }),
+          _react2.default.createElement(
+            'div',
+            { className: 'panel panel-success' },
+            _react2.default.createElement(
+              'div',
+              { className: 'panel-heading' },
+              '\u691C\u7D22\u7D50\u679C'
+            ),
+            _react2.default.createElement(
+              'ul',
+              { className: 'list-group' },
+              books
+            )
+          )
         )
       );
     }
@@ -78,22 +87,26 @@ var BookSearch = function (_Component) {
 
 var Book = function Book(props) {
   return _react2.default.createElement(
-    'div',
-    { className: 'panel panel-default' },
+    'li',
+    { className: 'list-group-item' },
     _react2.default.createElement(
-      'div',
-      { className: 'panel-heading' },
+      'h4',
+      null,
       _react2.default.createElement(
-        'h4',
-        { className: 'panel-title' },
+        'a',
+        { href: props.data.url },
         props.data.title
       )
     ),
-    _react2.default.createElement(
-      'div',
-      { className: 'panel-body' },
-      props.data.author
-    )
+    '\xA0\xA0',
+    props.data.author,
+    ' ',
+    props.data.publisher,
+    ' ',
+    props.data.date,
+    ' (',
+    props.data.isbn,
+    ')'
   );
 };
 
@@ -130,14 +143,30 @@ var Submit = function (_Component2) {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
-        'form',
-        { onSubmit: this.handleSubmit.bind(this) },
+        'div',
+        { className: 'row' },
         _react2.default.createElement(
           'div',
-          { className: 'form-group' },
-          _react2.default.createElement('input', { className: 'form-control', type: 'text', placeholder: '\u691C\u7D22\u30AF\u30A8\u30EA', value: this.state.query, onChange: this.handleQueryChange.bind(this) })
-        ),
-        _react2.default.createElement('input', { className: 'btn btn-default pull-right', type: 'submit', value: '\u691C\u7D22' })
+          { className: 'col-md-12' },
+          _react2.default.createElement(
+            'form',
+            { onSubmit: this.handleSubmit.bind(this) },
+            _react2.default.createElement(
+              'div',
+              { className: 'input-group' },
+              _react2.default.createElement('input', { className: 'form-control', type: 'text', size: '80', placeholder: '\u691C\u7D22\u30AF\u30A8\u30EA', value: this.state.query, onChange: this.handleQueryChange.bind(this) }),
+              _react2.default.createElement(
+                'span',
+                { className: 'input-group-btn' },
+                _react2.default.createElement(
+                  'button',
+                  { className: 'btn btn-primary', type: 'submit' },
+                  '\u691C\u7D22'
+                )
+              )
+            )
+          )
+        )
       );
     }
   }]);

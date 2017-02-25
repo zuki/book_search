@@ -46,10 +46,15 @@ defmodule BookSearch.Ndl do
           ~x"//searchRetrieveResponse/records/record/recordData/dcndl_simple:dc"l,
           title: ~x"./dc:title/text()"s,
           url: ~x"./rdfs:seeAlso/@rdf:resource"sl,
-          author: ~x"./dc:creator/text()"sl
+          author: ~x"./dc:creator/text()"sl,
+          publisher: ~x"./dc:publisher/text()"sl,
+          date: ~x"./dcterms:issued/text()"s,
+          isbn: ~x"./dc:identifier[@xsi:type='dcndl:ISBN']/text()"sl
         )
         |> Enum.map(fn (m) -> Map.update!(m, :url, &Enum.at(&1, 0))end)
         |> Enum.map(fn (m) -> Map.update!(m, :author, &Enum.at(&1, 0))end)
+        |> Enum.map(fn (m) -> Map.update!(m, :publisher, &Enum.at(&1, 0))end)
+        |> Enum.map(fn (m) -> Map.update!(m, :isbn, &Enum.at(&1, 0))end)
       {:ok, %HTTPoison.Response{status_code: code}} ->
         Logger.warn("HTTP Status: #{code}")
         []

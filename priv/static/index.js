@@ -29,12 +29,15 @@ class BookSearch extends Component {
 
     return (
       <div className='container'>
-        <h1>Phoenix+React BookSearch Sample</h1>
-        <div className='col-md-3'>
+        <h1>BookSearch</h1>
+        <div className='row'>
           <Submit onSubmit={this.handleSearchSubmit.bind(this)}/>
-        </div>
-        <div className='col-md-9'>
-          {books}
+          <div className='panel panel-success'>
+            <div className='panel-heading'>検索結果</div>
+            <ul className='list-group'>
+              {books}
+            </ul>
+          </div>
         </div>
       </div>
     );
@@ -43,14 +46,14 @@ class BookSearch extends Component {
 
 const Book = props => {
   return (
-    <div className='panel panel-default'>
-      <div className='panel-heading'>
-        <h4 className='panel-title'>{props.data.title}</h4>
-      </div>
-      <div className='panel-body'>
-        {props.data.author}
-      </div>
-    </div>
+    <li className='list-group-item'>
+      <h4>
+        <a href={props.data.url}>
+          {props.data.title}
+        </a>
+      </h4>
+      &nbsp;&nbsp;{props.data.author} {props.data.publisher} {props.data.date} ({props.data.isbn})
+    </li>
   );
 };
 
@@ -78,12 +81,18 @@ class Submit extends Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit.bind(this)}>
-        <div className='form-group'>
-          <input className='form-control' type='text' placeholder='検索クエリ' value={this.state.query} onChange={this.handleQueryChange.bind(this)}/>
+      <div className="row">
+        <div className="col-md-12">
+          <form onSubmit={this.handleSubmit.bind(this)}>
+            <div className='input-group'>
+              <input className='form-control' type='text' size="80" placeholder='検索クエリ' value={this.state.query} onChange={this.handleQueryChange.bind(this)}/>
+              <span className='input-group-btn'>
+                <button className='btn btn-primary' type='submit'>検索</button>
+              </span>
+            </div>
+          </form>
         </div>
-        <input className='btn btn-default pull-right' type='submit' value='検索' />
-      </form>
+      </div>
     );
   }
 }
