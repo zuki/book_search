@@ -29,11 +29,31 @@ class BookSearch extends Component {
 
     return (
       <div className='container'>
-        <h1>BookSearch</h1>
-        <div className='row'>
-          <Submit onSubmit={this.handleSearchSubmit.bind(this)}/>
+        <h1 className="text-center">BookSearch</h1>
+        <Submit onSubmit={this.handleSearchSubmit.bind(this)}/>
+        <Books data={this.state.data}/>
+      </div>
+    );
+  }
+}
+
+class Books extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    const books = this.props.data.map((book, i) => {
+      return (
+        <Book data={book} key={i} />
+      );
+    });
+
+    return (
+      <div className='row' style={{marginTop:'15px'}}>
+        <div className="col-md-10 col-md-offset-1">
           <div className='panel panel-success'>
-            <div className='panel-heading'>検索結果</div>
+            <div className='panel-heading text-center'>検索結果</div>
             <ul className='list-group'>
               {books}
             </ul>
@@ -81,11 +101,11 @@ class Submit extends Component {
 
   render() {
     return (
-      <div className="row">
-        <div className="col-md-12">
+      <div className='row'>
+        <div className="col-md-10 col-md-offset-1">
           <form onSubmit={this.handleSubmit.bind(this)}>
             <div className='input-group'>
-              <input className='form-control' type='text' size="80" placeholder='検索クエリ' value={this.state.query} onChange={this.handleQueryChange.bind(this)}/>
+              <input className='form-control' type='text' placeholder='検索クエリ' value={this.state.query} onChange={this.handleQueryChange.bind(this)}/>
               <span className='input-group-btn'>
                 <button className='btn btn-primary' type='submit'>検索</button>
               </span>
