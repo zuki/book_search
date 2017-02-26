@@ -16,3 +16,4 @@ erl_crash.dump
 /config/prod.secret.exs
 /config/dev.secret.exs
 /priv/static/node_modules
+/priv/static/js/bundle.js
