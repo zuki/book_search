@@ -13,9 +13,12 @@ defmodule BookSearch.Delegate do
     limit = opts[:limit] || 10
     backends = opts[:backends] || @backends
 
-    backends
-    |> Enum.map(&spawn_query(&1, query, limit))
-    |> await_results(opts)
+    results =
+      backends
+      |> Enum.map(&spawn_query(&1, query, limit))
+      |> await_results(opts)
+      |> Enum.sort(&(&1.title <= &2.title))
+    merge(results)
   end
 
   defp spawn_query(backend, query, limit) do
@@ -72,4 +75,26 @@ defmodule BookSearch.Delegate do
       0 -> :ok
     end
   end
+
+  defp merge(bibs), do: _merge(bibs, [])
+  defp _merge([], acc), do: acc
+  defp _merge([head|tail], acc) do
+    unless head.isbn do
+      bib = Map.put(head, :link, [%{:backend => head.backend, :url => head.url}])
+          |> Map.drop([:backend, :url])
+      _merge(tail, [bib|acc])
+    else
+      case Enum.find(acc, nil, fn(bib) -> bib.isbn == head.isbn end) do
+        nil ->
+          bib = Map.put(head, :link, [%{:backend => head.backend, :url => head.url}])
+              |> Map.drop([:backend, :url])
+          _merge(tail, [bib|acc])
+        bib ->
+          merged = Map.update!(bib, :link, fn(l) -> [%{:backend => head.backend, :url => head.url}|l] end)
+          acc = acc |> List.delete(bib) |> List.insert_at(-1, merged)
+          _merge(tail, acc)
+      end
+    end
+  end
+
 end

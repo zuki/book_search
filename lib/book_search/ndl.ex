@@ -1,6 +1,6 @@
 defmodule BookSearch.Ndl do
   import SweetXml
-  alias BookSearch.Result
+  #alias BookSearch.Result
   require Logger
 
   @http Application.get_env(:book_search, :ndl)[:http_client] || HTTPoison
@@ -25,7 +25,7 @@ defmodule BookSearch.Ndl do
     results =
       bibs
       |> Enum.map(fn (result) ->
-        Map.merge(%Result{backend: "ndl"}, result) end)
+        Map.merge(%{backend: "NDL"}, result) end)
     send(owner, {:results, query_ref, results})
   end
 

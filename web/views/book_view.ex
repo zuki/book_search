@@ -6,12 +6,13 @@ defmodule BookSearch.BookView do
   end
 
   def render("book.json", %{book: book}) do
+    link = Enum.map(book.link, fn(l) -> %{url: l.url, backend: l.backend} end)
     %{title: book.title,
       author: book.author,
       publisher: book.publisher,
       date: book.date,
       isbn: book.isbn,
-      url: book.url,
-      backend: book.backend}
+      link: link
+    }
   end
 end

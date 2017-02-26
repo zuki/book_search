@@ -1,6 +1,6 @@
 defmodule BookSearch.Cinii do
   import SweetXml
-  alias BookSearch.Result
+  #alias BookSearch.Result
   require Logger
 
   @http Application.get_env(:book_search, :cinii)[:http_client] || HTTPoison
@@ -25,7 +25,7 @@ defmodule BookSearch.Cinii do
     results =
       bibs
       |> Enum.map(fn (result) ->
-        Map.merge(%Result{backend: "cinii"}, result) end)
+        Map.merge(%{backend: "CiNii"}, result) end)
     send(owner, {:results, query_ref, results})
   end
 

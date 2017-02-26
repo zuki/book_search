@@ -16,17 +16,11 @@ class BookSearch extends Component {
       .set('Accept', 'application/json')
       .set('Content-type', 'application/json')
       .end((err, res) => {
-        this.setState({data: res.body.data.reverse()});
+        this.setState({data: res.body.data});
       });
   }
 
   render() {
-    const books = this.state.data.map((book, i) => {
-      return (
-        <Book data={book} key={i} />
-      );
-    });
-
     return (
       <div className='container'>
         <h1 className="text-center">BookSearch</h1>
@@ -43,6 +37,7 @@ class Books extends Component {
   }
 
   render() {
+    console.log(this.props.data)
     const books = this.props.data.map((book, i) => {
       return (
         <Book data={book} key={i} />
@@ -64,17 +59,34 @@ class Books extends Component {
   }
 }
 
-const Book = props => {
-  return (
-    <li className='list-group-item'>
-      <h4>
-        <a href={props.data.url}>
-          {props.data.title}
-        </a>
-      </h4>
-      &nbsp;&nbsp;{props.data.author} {props.data.publisher} {props.data.date} ({props.data.isbn})
-    </li>
-  );
+class Book extends Component {
+  constructor(props) {
+    super(props)
+  }
+
+  render() {
+    const { data } = this.props
+    const link = data.link.map((l, i) => {
+      return (
+        <span>
+          [ <a key={i} href={l.url} target="_blank">{l.backend}</a> ]&nbsp;
+        </span>
+      );
+    });
+    const title_author = data.title + (data.author ? ' / ' + data.author : '')
+    const publication = data.publisher
+      ? data.date ? data.publisher + ' (' + data.date + ')' : data.publisher
+      : data.date ? '(' + data.date + ')' : '';
+    const isbn = data.isbn ? 'ISBN: ' + data.isbn : ''
+    return (
+      <li className='list-group-item'>
+        <h4>
+          {title_author}
+        </h4>
+        &nbsp;&nbsp;{publication} {isbn} {link}
+      </li>
+    );
+  }
 };
 
 class Submit extends Component {
