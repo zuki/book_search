@@ -46,7 +46,7 @@ defmodule BookSearch.Cinii do
         )
         |> Enum.map(fn (m) -> Map.update!(m, :author, &Enum.join(&1, ", ")) end)
         |> Enum.map(fn (m) -> Map.update!(m, :isbn, &Enum.at(&1, 0))end)
-        |> Enum.map(fn (m) -> Map.update!(m, :isbn, fn(v) -> unless v, do: "", else: String.slice(v, 9..-1)end)end)
+        |> Enum.map(fn (m) -> Map.update!(m, :isbn, fn(v) -> unless v, do: nil, else: String.slice(v, 9..-1)end)end)
       {:ok, %HTTPoison.Response{status_code: code}} ->
         Logger.warn("HTTP Status: #{code}")
         []
