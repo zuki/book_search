@@ -31,62 +31,48 @@ class BookSearch extends Component {
   }
 }
 
-class Books extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    console.log(this.props.data)
-    const books = this.props.data.map((book, i) => {
-      return (
-        <Book data={book} key={i} />
-      );
-    });
-
+const Books = (props) => {
+  const books = props.data.map((book, i) => {
     return (
-      <div className='row' style={{marginTop:'15px'}}>
-        <div className="col-md-10 col-md-offset-1">
-          <div className='panel panel-success'>
-            <div className='panel-heading text-center'>検索結果</div>
-            <ul className='list-group'>
-              {books}
-            </ul>
-          </div>
+      <Book data={book} key={i} />
+    );
+  });
+
+  return (
+    <div className='row' style={{marginTop:'15px'}}>
+      <div className="col-md-10 col-md-offset-1">
+        <div className='panel panel-success'>
+          <div className='panel-heading text-center'>検索結果</div>
+          <ul className='list-group'>
+            {books}
+          </ul>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
-class Book extends Component {
-  constructor(props) {
-    super(props)
-  }
-
-  render() {
-    const { data } = this.props
-    const link = data.link.map((l, i) => {
-      return (
-        <span>
-          [ <a key={i} href={l.url} target="_blank">{l.backend}</a> ]&nbsp;
-        </span>
-      );
-    });
-    const title_author = data.title + (data.author ? ' / ' + data.author : '')
-    const publication = data.publisher
-      ? data.date ? data.publisher + ' (' + data.date + ')' : data.publisher
-      : data.date ? '(' + data.date + ')' : '';
-    const isbn = data.isbn ? 'ISBN: ' + data.isbn : ''
+const Book = (props) => {
+  const link = props.data.link.map((l, i) => {
     return (
-      <li className='list-group-item'>
-        <h4>
-          {title_author}
-        </h4>
-        &nbsp;&nbsp;{publication} {isbn} {link}
-      </li>
+      <span key={i}>
+        [ <a href={l.url} target="_blank">{l.backend}</a> ]&nbsp;
+      </span>
     );
-  }
+  });
+  const title_author = props.data.title + (props.data.author ? ' / ' + props.data.author : '')
+  const publication = props.data.publisher
+    ? props.data.date ? props.data.publisher + ' (' + props.data.date + ')' : props.data.publisher
+    : props.data.date ? '(' + props.data.date + ')' : '';
+  const isbn = props.data.isbn ? 'ISBN: ' + props.data.isbn : ''
+  return (
+    <li className='list-group-item'>
+      <h4>
+        {title_author}
+      </h4>
+      &nbsp;&nbsp;{publication} {isbn} {link}
+    </li>
+  );
 };
 
 class Submit extends Component {
